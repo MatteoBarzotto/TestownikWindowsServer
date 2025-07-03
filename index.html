@@ -64,25 +64,7 @@
 </div>
 
 <script>
-const questions = [
-    {
-        question: "Która edycja Windows Server 2016 pozwala na uruchamianie maszyn wirtualnych?",
-        A: "Essentials",
-        B: "Datacenter",
-        C: "Foundation",
-        D: "Nano Server",
-        correct: "B"
-    },
-    {
-        question: "Gdzie przechowywane są skrypty logowania w domenie?",
-        A: "C:\\Windows\\SYSVOL\\domain\\scripts",
-        B: "C:\\ProgramData\\Microsoft",
-        C: "C:\\Users\\Public",
-        D: "C:\\Windows\\System32",
-        correct: "A"
-    }
-    // Dodaj więcej pytań tutaj
-];
+const questions = [...DUŻA_TABELA_PYTAŃ_JSON...]; // zostanie zastąpiona poniżej
 
 let current = 0;
 let correctCount = 0;
