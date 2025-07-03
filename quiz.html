@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <title>Quiz Windows Server</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .container {
+            width: 80%;
+            max-width: 900px;
+            margin-top: 40px;
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        h2 {
+            margin-bottom: 20px;
+        }
+        .btn {
+            display: block;
+            width: 100%;
+            margin: 10px 0;
+            padding: 12px;
+            font-size: 16px;
+            cursor: pointer;
+            border: none;
+            border-radius: 6px;
+            background-color: #e0e0e0;
+        }
+        .btn.correct { background-color: #b6f7b0; }
+        .btn.wrong { background-color: #f7b0b0; }
+        .feedback {
+            font-weight: bold;
+            margin-top: 15px;
+        }
+        #next-btn {
+            margin-top: 20px;
+            padding: 10px 20px;
+        }
+        #counter {
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h2 id="question">Ładowanie pytania...</h2>
+    <button class="btn" onclick="checkAnswer('A')" id="btnA"></button>
+    <button class="btn" onclick="checkAnswer('B')" id="btnB"></button>
+    <button class="btn" onclick="checkAnswer('C')" id="btnC"></button>
+    <button class="btn" onclick="checkAnswer('D')" id="btnD"></button>
+    <div class="feedback" id="feedback"></div>
+    <div id="counter">✅ 0 | ❌ 0</div>
+    <button id="next-btn" onclick="loadNextQuestion()">Następne pytanie</button>
+</div>
+
+<script>
+const questions = [
+    {
+        question: "Która edycja Windows Server 2016 pozwala na uruchamianie maszyn wirtualnych?",
+        A: "Essentials",
+        B: "Datacenter",
+        C: "Foundation",
+        D: "Nano Server",
+        correct: "B"
+    },
+    {
+        question: "Gdzie przechowywane są skrypty logowania w domenie?",
+        A: "C:\\Windows\\SYSVOL\\domain\\scripts",
+        B: "C:\\ProgramData\\Microsoft",
+        C: "C:\\Users\\Public",
+        D: "C:\\Windows\\System32",
+        correct: "A"
+    }
+    // Dodaj więcej pytań tutaj
+];
+
+let current = 0;
+let correctCount = 0;
+let wrongCount = 0;
+
+function loadNextQuestion() {
+    resetButtons();
+    document.getElementById('feedback').textContent = "";
+    if (current >= questions.length) {
+        document.getElementById('question').textContent = `Koniec quizu! ✅ ${correctCount} | ❌ ${wrongCount}`;
+        document.getElementById('next-btn').style.display = 'none';
+        return;
+    }
+    const q = questions[current];
+    document.getElementById('question').textContent = q.question;
+    document.getElementById('btnA').textContent = `A. ${q.A}`;
+    document.getElementById('btnB').textContent = `B. ${q.B}`;
+    document.getElementById('btnC').textContent = `C. ${q.C}`;
+    document.getElementById('btnD').textContent = `D. ${q.D}`;
+}
+
+function checkAnswer(selected) {
+    const q = questions[current];
+    const correct = q.correct;
+
+    ['A', 'B', 'C', 'D'].forEach(letter => {
+        const btn = document.getElementById(`btn${letter}`);
+        btn.disabled = true;
+        if (letter === correct) btn.classList.add("correct");
+        if (letter === selected && letter !== correct) btn.classList.add("wrong");
+    });
+
+    if (selected === correct) {
+        document.getElementById('feedback').textContent = "✅ Dobrze!";
+        correctCount++;
+    } else {
+        document.getElementById('feedback').textContent = `❌ Błąd! Poprawna odpowiedź: ${correct}`;
+        wrongCount++;
+    }
+    document.getElementById('counter').textContent = `✅ ${correctCount} | ❌ ${wrongCount}`;
+    current++;
+}
+
+function resetButtons() {
+    ['A', 'B', 'C', 'D'].forEach(letter => {
+        const btn = document.getElementById(`btn${letter}`);
+        btn.disabled = false;
+        btn.classList.remove("correct", "wrong");
+    });
+}
+
+loadNextQuestion();
+</script>
+</body>
+</html>
